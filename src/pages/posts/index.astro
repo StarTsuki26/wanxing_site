@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<Base title="文章">
+  <h2 class="section">全部文章 · 共 {posts.length} 篇</h2>
+  <ul class="post-list">
+    {posts.map((p) => (
+      <li>
+        <span class="date">{fmt(p.data.date)}</span>
+        <a class="title" href={`/posts/${p.id}/`}>{p.data.title}</a>
+        <div>
+          {p.data.tags.map((t) => <span class="tag">#{t}</span>)}
+        </div>
+        {p.data.description && <span class="desc">{p.data.description}</span>}
+      </li>
+    ))}
+  </ul>
+</Base>
