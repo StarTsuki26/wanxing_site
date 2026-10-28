@@ -118,11 +118,12 @@ nav.main a:hover { border-color: var(--gold); color: var(--gold); transform: tra
   background: radial-gradient(circle, #ffcf6e36 0%, #ff9d7e1e 55%, transparent 70%);
   filter: blur(4px);
 }
-.avatar-soft img {
+.avatar-soft img, .avatar-soft video {
   position: relative; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
   -webkit-mask-image: radial-gradient(circle, #000 56%, transparent 71%);
   mask-image: radial-gradient(circle, #000 56%, transparent 71%);
   transform: rotate(-2deg);
+  display: block;
 }
 .avatar-stack { display: flex; flex-direction: column; align-items: center; padding-top: 30px; }
 .avatar-stack .avatar-soft { width: clamp(180px, 23vw, 252px); aspect-ratio: 1; }

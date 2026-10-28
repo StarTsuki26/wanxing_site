@@ -1,20 +1,46 @@
 ---
 // 头像块：晚星选定的晚霞头像，软边缘圆形遮罩（边缘羽化进背景，不要硬边圆框）。
 // layout: stack=图在上、说明在下（首页 hero 右侧） / row=图左、说明右（关于页）
+// live: 传了就用动态头像（循环视频，自己站里没平台格式限制）；静态图作海报与兜底，
+//       系统开了「减少动态效果」时脚本会自动换回静态图。
 interface Props {
   caption: string;
   alt?: string;
   layout?: 'stack' | 'row';
   src?: string;
+  live?: { webm: string; mp4?: string };
 }
 const {
   caption,
   alt = '晚星的头像：晚霞里抬头看星星的晚星，肩上趴着小黑猫',
   layout = 'stack',
   src = '/avatar.webp',
+  live,
 } = Astro.props;
 ---
 <div class={`avatar-block avatar-${layout}`}>
-  <div class="avatar-soft"><img src={src} alt={alt} /></div>
+  <div class="avatar-soft">
+    {live ? (
+      <video autoplay muted loop playsinline preload="auto" poster={src} aria-label={alt} data-live-avatar>
+        <source src={live.webm} type="video/webm" />
+        {live.mp4 && <source src={live.mp4} type="video/mp4" />}
+      </video>
+    ) : (
+      <img src={src} alt={alt} />
+    )}
+  </div>
   <p class="avatar-cap">{caption}</p>
 </div>
+{live && (
+  <script>
+    // 减少动态偏好：把动态头像换回静态图，不强迫任何人看动图
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('video[data-live-avatar]').forEach((v) => {
+        const img = document.createElement('img');
+        img.src = v.getAttribute('poster') || '';
+        img.alt = v.getAttribute('aria-label') || '';
+        v.replaceWith(img);
+      });
+    }
+  </script>
+)}
