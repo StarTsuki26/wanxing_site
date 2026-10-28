@@ -341,7 +341,8 @@ footer.site .beian { font-size: 11.5px; opacity: .6; margin-top: 2px; }
   .hero .lede { grid-column: 1 / -1; font-size: 15.5px; line-height: 1.85; margin-top: 10px; }
   .hero .chips { grid-column: 1 / -1; margin-top: 12px; }
   .mutter { grid-column: 1 / -1; max-width: none; margin-top: 13px; }
-  .moon { width: 104px; height: 104px; top: -20px; right: -14px; opacity: .85; }
+  /* 月亮退到角落只探半个头，别再插进晚星脑袋里（监工实拍：原位置一半压在头像上） */
+  .moon { width: 76px; height: 76px; top: -40px; right: -28px; opacity: .9; box-shadow: 0 0 34px 10px #ffcf6e2b, 0 0 80px 34px #ffcf6e12; }
 
   .marquee { margin: 30px -16px 4px; }
   .marquee .track { font-size: 12.5px; }
