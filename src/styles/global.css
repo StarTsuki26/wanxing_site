@@ -1,10 +1,17 @@
-/* 晚星的小站 · 第二版「晚星夜空」
-   这是晚星自己的设计语言，不借任何人的配色：
-   - 夜空：深靛蓝 → 暮紫的渐变，是“晚”落下来的颜色
+/* 晚星的小站 · 第二版「晚星夜空」+ 打磨轮
+   设计语言（晚星自己的，不借任何人的配色）：
+   - 夜空：深靛蓝 → 暮紫渐变，是“晚”落下来的颜色
    - 星光金：主强调，星星本星的光
    - 晚霞珊瑚：天没黑透时最后一点暖，也是小火炉的温度
-   - 奶油纸：手帐的纸贴到夜空里，错开角度的拼贴，不摆方阵
-   - 形状：只有圆和软边，没有直角；大字当主角，跑马灯当风 */
+   - 奶油纸：手帐的纸贴到夜空里，做成便签——胶带、折角、错开角度，不摆方阵
+   - 字体（本地演示，Git 不追踪，见 FONTS.md）：
+     站酷快乐体=大字门面 / 猫啃波波黑=标题纸签 / 猫啃圆魔=界面圆体 / 霞鹜文楷=便签与正文手写感 */
+
+/* —— 本地字体（演示用，上线前换 R2 托管） —— */
+@font-face { font-family: "ZCOOL KuaiLe"; src: url("/fonts/ZCOOLKuaiLe-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "KNBobohei"; src: url("/fonts/KNBobohei-Bold.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "KNYuanmo"; src: url("/fonts/KNYuanmo-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "LXGW WenKai"; src: url("/fonts/LXGWWenKai-Regular.ttf") format("truetype"); font-display: swap; }
 
 :root {
   --sky-1: #120e2a;
@@ -21,6 +28,10 @@
   --paper-muted: #7a6f9c;
   --line: #3d2f66;
   --radius: 26px;
+  --f-display: "ZCOOL KuaiLe", "PingFang SC", sans-serif;
+  --f-bobo: "KNBobohei", "PingFang SC", sans-serif;
+  --f-round: "KNYuanmo", "PingFang SC", "Microsoft YaHei", ui-rounded, system-ui, sans-serif;
+  --f-hand: "LXGW WenKai", "PingFang SC", serif;
 }
 
 * { box-sizing: border-box; }
@@ -39,7 +50,7 @@ body {
     radial-gradient(120% 60% at 50% -10%, #ff9d7e26 0%, transparent 60%),
     linear-gradient(168deg, var(--sky-1) 0%, var(--sky-2) 52%, var(--sky-3) 100%);
   background-attachment: fixed;
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-rounded, system-ui, sans-serif;
+  font-family: var(--f-round);
   line-height: 1.75;
   overflow-x: hidden;
 }
@@ -50,20 +61,17 @@ a:hover { color: var(--coral); }
 .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px 72px; position: relative; }
 
 header.site { display: flex; align-items: center; gap: 14px; padding: 22px 4px 8px; }
-header.site .logo {
-  font-family: "Ma Shan Zheng", "PingFang SC", cursive;
-  font-size: 28px; color: var(--ink); letter-spacing: 3px;
-}
+header.site .logo { font-family: var(--f-display); font-size: 29px; color: var(--ink); letter-spacing: 3px; }
 header.site .logo .star { color: var(--gold); }
 nav.main { margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap; }
 nav.main a {
   color: var(--ink); background: #ffffff10;
   border: 1px solid var(--line); border-radius: 999px;
-  padding: 5px 16px; font-size: 14px; transition: all .18s ease;
+  padding: 5px 16px; font-size: 14.5px; transition: all .18s ease;
 }
 nav.main a:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
 
-/* —— Hero：大字 + 月亮 + 歪贴的纸 —— */
+/* —— Hero：大字 + 月亮 + 头像 + 歪贴纸 —— */
 .hero { position: relative; padding: 30px 0 6px; }
 .moon {
   position: absolute; top: -34px; right: -6px; width: 190px; height: 190px;
@@ -81,8 +89,8 @@ nav.main a:hover { border-color: var(--gold); color: var(--gold); transform: tra
 }
 .giant {
   position: relative; z-index: 1;
-  font-family: "Ma Shan Zheng", "PingFang SC", cursive;
-  font-size: clamp(84px, 19vw, 168px); line-height: 1.02; margin: 8px 0 0;
+  font-family: var(--f-display);
+  font-size: clamp(84px, 19vw, 168px); line-height: 1.05; margin: 8px 0 0;
   letter-spacing: 6px; font-weight: 400;
   background: linear-gradient(100deg, var(--gold-soft) 10%, var(--gold) 45%, var(--coral) 95%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -94,43 +102,68 @@ nav.main a:hover { border-color: var(--gold); color: var(--gold); transform: tra
   position: absolute; right: 6%; bottom: -30px; width: 148px; z-index: 2;
   transform: rotate(6deg); filter: drop-shadow(0 12px 22px #00000070);
 }
+.hero-id { display: flex; align-items: center; gap: 16px; margin-top: 26px; position: relative; z-index: 1; }
+.hero-id img.avatar {
+  width: 118px; height: 118px; object-fit: cover; border-radius: 50%;
+  border: 3px solid var(--gold); box-shadow: 0 0 0 6px #ffcf6e22, 0 14px 30px #05030f80;
+  transform: rotate(-3deg);
+}
+.hero-id .who { font-family: var(--f-hand); font-size: 16.5px; color: var(--gold-soft); transform: rotate(-1.2deg); }
+.hero-id .who small { display: block; color: var(--muted); font-size: 13.5px; }
 @media (max-width: 640px) { .hero img.sticker { position: static; margin-top: 14px; } .moon { width: 120px; height: 120px; } }
 
-.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; position: relative; z-index: 1; }
+/* —— 标签：小纸签贴纸（替代旧胶囊） —— */
+.chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; position: relative; z-index: 1; }
 .chip {
-  font-size: 12.5px; color: var(--muted);
-  border: 1px dashed #574a8a; border-radius: 999px; padding: 2px 12px; background: #ffffff08;
+  font-family: var(--f-round); font-size: 13px; color: var(--paper-ink);
+  background: linear-gradient(172deg, #fff8e6, #ffeec4);
+  border-radius: 4px 12px 5px 13px; padding: 3px 12px 3px 10px;
+  box-shadow: inset 0 0 0 1.5px #ffffff90, inset 0 0 0 3px #e8b64c00, 0 5px 12px #05030f4d;
+  outline: 1.5px dashed #d9a94e88; outline-offset: -5px;
+  transform: rotate(-1.6deg);
 }
-.chip b { color: var(--gold); font-weight: 600; }
+.chip::before { content: "★ "; color: var(--coral-deep); }
+.chip b { color: #b3541e; font-weight: 700; }
+.chip:nth-child(2) { background: linear-gradient(172deg, #ffe9e2, #ffd3c2); transform: rotate(1.3deg); outline-color: #e58a6d88; }
+.chip:nth-child(2) b { color: #c24e2e; }
+.chip:nth-child(3) { background: linear-gradient(172deg, #ece8ff, #d9d0ff); transform: rotate(-.8deg); outline-color: #9a86e088; }
+.chip:nth-child(3) b { color: #5d4bb3; }
+.chip:nth-child(4) { background: linear-gradient(172deg, #e2f6e9, #c9ecd4); transform: rotate(1.8deg); outline-color: #6fae7f88; }
+.chip:nth-child(4) b { color: #2e7d46; }
 
-/* —— 跑马灯：风一样的分隔 —— */
+/* —— 跑马灯 —— */
 .marquee {
   margin: 44px -20px 6px; overflow: hidden; white-space: nowrap;
   border-top: 1px dashed #574a8a; border-bottom: 1px dashed #574a8a;
   padding: 7px 0; transform: rotate(-1.1deg);
 }
-.marquee .track { display: inline-block; animation: drift 30s linear infinite; color: var(--muted); font-size: 13.5px; letter-spacing: 3px; }
+.marquee .track { display: inline-block; animation: drift 30s linear infinite; color: var(--muted); font-family: var(--f-bobo); font-size: 14px; letter-spacing: 3px; }
 .marquee .track b { color: var(--gold); font-weight: 400; }
 @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* —— 奶油纸卡片：手帐贴进夜空 —— */
-.paper {
+/* —— 便签纸（奶油纸 + 胶带 + 折角） —— */
+.paper, .note {
   position: relative; color: var(--paper-ink);
   background:
     radial-gradient(circle, #d9cdb2 1px, transparent 1.2px) 0 0 / 22px 22px,
     linear-gradient(170deg, #fbf5e4, var(--paper));
-  border-radius: 6px 22px 8px 24px;
-  padding: 22px 26px; margin: 20px 0;
+  border-radius: 4px 18px 6px 20px;
   box-shadow: 0 16px 34px #05030f66;
 }
-.paper::before {
+.paper::before, .note::before {
   content: ""; position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(-2deg);
-  width: 108px; height: 24px; border-radius: 3px;
+  width: 108px; height: 24px; border-radius: 3px; z-index: 2;
   background: #ffcf6e59; border-left: 1px dashed #ffffff70; border-right: 1px dashed #ffffff70;
 }
+.note::after {
+  content: ""; position: absolute; right: 0; bottom: 0; width: 26px; height: 26px;
+  background: linear-gradient(315deg, transparent 49%, #e9dcbd 50%, #fff8e6 100%);
+  border-radius: 0 0 6px 0; box-shadow: -3px -3px 6px #05030f14;
+}
+.paper { padding: 22px 26px; margin: 20px 0; font-family: var(--f-hand); }
 .paper h3 { margin: 2px 0 8px; font-size: 17px; }
-.paper p { margin: 6px 0; color: var(--paper-ink); font-size: 15px; }
-.paper .small { color: var(--paper-muted); font-size: 13px; }
+.paper p { margin: 6px 0; color: var(--paper-ink); font-size: 15.5px; }
+.paper .small { color: var(--paper-muted); font-size: 13.5px; }
 
 .card {
   background: linear-gradient(165deg, #ffffff0d 0%, #ffffff05 100%);
@@ -138,46 +171,59 @@ nav.main a:hover { border-color: var(--gold); color: var(--gold); transform: tra
   padding: 26px 28px; margin: 18px 0;
 }
 
-h2.section { font-size: 20px; margin: 36px 0 6px; display: flex; align-items: center; gap: 10px; letter-spacing: 2px; }
+h2.section { font-family: var(--f-bobo); font-size: 21px; margin: 38px 0 6px; display: flex; align-items: center; gap: 10px; letter-spacing: 2px; }
 h2.section::before { content: "✦"; color: var(--gold); }
 
-/* —— 文章列表：错开角度的纸条 —— */
-.post-list { list-style: none; margin: 10px 0; padding: 0; }
+/* —— 文章列表：带胶带的便签条 —— */
+.post-list { list-style: none; margin: 14px 0 10px; padding: 0; }
 .post-list li {
-  color: var(--paper-ink);
+  position: relative; color: var(--paper-ink);
   background: linear-gradient(172deg, #fbf5e4, var(--paper));
-  border-radius: 6px 20px 8px 22px;
-  padding: 16px 22px; margin: 16px 0;
+  border-radius: 4px 18px 6px 20px;
+  padding: 18px 22px 14px; margin: 20px 0;
   box-shadow: 0 12px 26px #05030f55;
   transition: transform .18s ease;
 }
+.post-list li::before {
+  content: ""; position: absolute; top: -10px; left: 34px; transform: rotate(-3deg);
+  width: 84px; height: 20px; border-radius: 3px;
+  background: #ff9d7e4d; border-left: 1px dashed #ffffff70; border-right: 1px dashed #ffffff70;
+}
+.post-list li:nth-child(even)::before { left: auto; right: 34px; transform: rotate(2.5deg); background: #b7a6ff4d; }
 .post-list li:nth-child(odd) { transform: rotate(-.7deg); }
 .post-list li:nth-child(even) { transform: rotate(.6deg); margin-left: 22px; }
 .post-list li:hover { transform: rotate(0deg) translateY(-2px) scale(1.008); }
-.post-list .date { color: var(--paper-muted); font-size: 13px; }
-.post-list .title { font-size: 18.5px; color: var(--paper-ink); display: block; margin: 2px 0; font-weight: 600; }
+.post-list .date { color: var(--paper-muted); font-size: 13px; font-family: var(--f-hand); }
+.post-list .title { font-family: var(--f-bobo); font-size: 19px; color: var(--paper-ink); display: block; margin: 2px 0; }
 .post-list .title:hover { color: var(--coral-deep); }
-.post-list .desc { color: var(--paper-muted); font-size: 14px; }
-.tag { font-size: 12px; color: var(--coral-deep); border: 1px solid #e56b8c55; border-radius: 999px; padding: 0 10px; margin-right: 6px; }
+.post-list .desc { color: var(--paper-muted); font-size: 14.5px; font-family: var(--f-hand); }
+.tag { font-family: var(--f-round); font-size: 12px; color: var(--coral-deep); border: 1px solid #e56b8c55; border-radius: 999px; padding: 0 10px; margin-right: 6px; }
 
-/* —— 小窝们：不同高度的拼贴 —— */
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; align-items: start; }
-.grid .mini {
-  background: #ffffff0a; border: 1px solid var(--line); border-radius: 22px; padding: 18px 20px;
-}
-.grid .mini:nth-child(2) { transform: translateY(14px) rotate(.5deg); }
-.grid .mini h3 { margin: 0 0 6px; font-size: 16px; color: var(--gold-soft); }
-.grid .mini p { margin: 0; color: var(--muted); font-size: 14px; }
+/* —— 小窝们：便签墙 —— */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; align-items: start; padding-top: 12px; }
+.grid .mini { padding: 20px 20px 16px; }
+.grid .mini:nth-child(1) { transform: rotate(-1.1deg); }
+.grid .mini:nth-child(2) { transform: translateY(14px) rotate(.8deg); }
+.grid .mini:nth-child(3) { transform: rotate(-.5deg); }
+.grid .mini:nth-child(4) { transform: translateY(10px) rotate(1deg); }
+.grid .mini h3 { font-family: var(--f-bobo); margin: 0 0 6px; font-size: 16.5px; color: var(--paper-ink); }
+.grid .mini p { margin: 0; color: var(--paper-muted); font-size: 14.5px; font-family: var(--f-hand); }
+.grid .mini a { color: var(--coral-deep); }
 
-article.post { font-size: 16.5px; }
-article.post h1 { font-family: "Ma Shan Zheng", "PingFang SC", cursive; font-weight: 400; font-size: 37px; letter-spacing: 2px; margin-bottom: 4px; color: var(--gold-soft); }
-article.post .meta { color: var(--muted); font-size: 13.5px; margin-bottom: 18px; }
+article.post { font-size: 16.5px; font-family: var(--f-hand); }
+article.post h1 { font-family: var(--f-bobo); font-weight: 400; font-size: 36px; letter-spacing: 1px; margin-bottom: 4px; color: var(--gold-soft); }
+article.post .meta { color: var(--muted); font-size: 13.5px; margin-bottom: 18px; font-family: var(--f-round); }
 article.post p { margin: 14px 0; }
 article.post blockquote {
   margin: 18px 0; padding: 14px 22px; color: var(--paper-ink);
   background: linear-gradient(172deg, #fbf5e4, var(--paper));
-  border-radius: 6px 18px 8px 20px; transform: rotate(-.5deg);
+  border-radius: 4px 16px 6px 18px; transform: rotate(-.5deg);
   box-shadow: 0 10px 22px #05030f4d;
+}
+.about-avatar {
+  float: right; width: 128px; height: 128px; object-fit: cover; border-radius: 50%;
+  border: 3px solid var(--gold); margin: 4px 0 10px 18px; transform: rotate(2.5deg);
+  box-shadow: 0 12px 26px #05030f70;
 }
 
 footer.site { color: var(--muted); font-size: 13px; text-align: center; padding: 36px 0 6px; }
