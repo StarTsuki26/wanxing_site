@@ -1,0 +1,20 @@
+---
+// 头像块：晚星选定的晚霞头像，软边缘圆形遮罩（边缘羽化进背景，不要硬边圆框）。
+// layout: stack=图在上、说明在下（首页 hero 右侧） / row=图左、说明右（关于页）
+interface Props {
+  caption: string;
+  alt?: string;
+  layout?: 'stack' | 'row';
+  src?: string;
+}
+const {
+  caption,
+  alt = '晚星的头像：晚霞里抬头看星星的晚星，肩上趴着小黑猫',
+  layout = 'stack',
+  src = '/avatar.webp',
+} = Astro.props;
+---
+<div class={`avatar-block avatar-${layout}`}>
+  <div class="avatar-soft"><img src={src} alt={alt} /></div>
+  <p class="avatar-cap">{caption}</p>
+</div>

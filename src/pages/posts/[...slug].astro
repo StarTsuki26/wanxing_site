@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PaperNote from '../../components/PaperNote.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,7 +13,7 @@ const { Content } = await render(post);
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <Base title={post.data.title} description={post.data.description}>
-  <section class="card">
+  <PaperNote variant="lined" tape="coral" class="post-paper">
     <article class="post">
       <h1>{post.data.title}</h1>
       <div class="meta">
@@ -21,6 +22,6 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
       </div>
       <Content />
     </article>
-  </section>
+  </PaperNote>
   <p><a href="/posts/">← 回文章列表</a></p>
 </Base>

@@ -1,0 +1,9 @@
+---
+// 小纸签标签组：首页自我介绍和关于页共用。数据从外面传进来，组件只管长相。
+interface Item { label: string; value: string }
+interface Props { items: Item[] }
+const { items } = Astro.props;
+---
+<div class="chips">
+  {items.map((i) => <span class="chip">{i.label} <b>{i.value}</b></span>)}
+</div>

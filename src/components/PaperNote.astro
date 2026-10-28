@@ -1,0 +1,14 @@
+---
+// 便签纸容器：每个使用地点一款独立纸面，不再全站一个样。
+// variant: dots=点格奶油纸（列表） / lined=横线纸（文章正文） / lined-lav=薰衣草横线纸（关于页正文）
+// tape: 胶带颜色 gold / coral / lav
+interface Props {
+  variant?: 'dots' | 'lined' | 'lined-lav';
+  tape?: 'gold' | 'coral' | 'lav';
+  class?: string;
+}
+const { variant = 'dots', tape = 'gold', class: cls = '' } = Astro.props;
+---
+<div class={`paper-note paper-${variant} tape-${tape} ${cls}`}>
+  <slot />
+</div>

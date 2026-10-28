@@ -1,0 +1,35 @@
+---
+// 小窝胶囊：默认只是一颗写着 Title 的胶囊，点击后内容从左上角往右下角展开。
+// 数据来自 src/data/nests.ts，组件只管展开动画和长相。
+interface Props {
+  icon: string;
+  title: string;
+  link?: { href: string; label: string };
+}
+const { icon, title, link } = Astro.props;
+---
+<div class="nest">
+  <button class="nest-head" type="button" aria-expanded="false">
+    <span class="nest-icon" aria-hidden="true">{icon}</span>
+    <span class="nest-title">{title}</span>
+    <span class="nest-toggle" aria-hidden="true">＋</span>
+  </button>
+  <div class="nest-panel">
+    <div class="nest-body">
+      <p><slot /></p>
+      {link && <p class="nest-link"><a href={link.href} rel="noopener">{link.label} →</a></p>}
+    </div>
+  </div>
+</div>
+<script>
+  document.querySelectorAll('.nest-head').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const nest = btn.closest('.nest');
+      if (!nest) return;
+      const open = nest.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+      const t = btn.querySelector('.nest-toggle');
+      if (t) t.textContent = open ? '－' : '＋';
+    });
+  });
+</script>

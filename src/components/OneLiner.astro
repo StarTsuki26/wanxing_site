@@ -1,0 +1,18 @@
+---
+// 一言组件：从本地语录库（src/data/quotes.ts）随机抽一句，不调外部 API。
+// 首屏先渲染第一句，脚本加载后随机换上抽中的那句；按钮可以再抽。
+import { quotes } from '../data/quotes';
+---
+<figure class="oneliner">
+  <span class="oneliner-mark" aria-hidden="true">✦</span>
+  <blockquote id="oneliner-text">{quotes[0]}</blockquote>
+  <button class="oneliner-next" type="button">再抽一句 ↻</button>
+</figure>
+<script define:vars={{ quotes }}>
+  const el = document.getElementById('oneliner-text');
+  const pick = () => quotes[Math.floor(Math.random() * quotes.length)];
+  if (el) el.textContent = pick();
+  document
+    .querySelector('.oneliner-next')
+    ?.addEventListener('click', () => { if (el) el.textContent = pick(); });
+</script>
