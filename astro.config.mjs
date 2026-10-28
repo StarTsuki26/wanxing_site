@@ -7,7 +7,7 @@ export default defineConfig({
   site: 'https://star.sanyyao.com',
   build: { format: 'directory' },
   markdown: {
-    // 扩展语法：***词语*** 渲染成胶囊（见 src/plugins/remark-capsule.mjs）
+    // 扩展语法：==词语== 渲染成胶囊（见 src/plugins/remark-capsule.mjs）
     remarkPlugins: [remarkCapsule],
   },
 });

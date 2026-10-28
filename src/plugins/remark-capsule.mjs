@@ -1,30 +1,45 @@
-// remark 扩展语法：***词语*** → <span class="capsule">词语</span>
-// 灵感来自死猫站的扩展语法（SanYYao 指的路）：三颗星包住的词，渲染成晚星设计的胶囊。
-// Markdown 里 ***x*** 会被解析成 emphasis>strong 或 strong>emphasis 的嵌套，这里把这种嵌套换成胶囊 span。
-// 零依赖：手写递归遍历 mdast，用 html 节点拼开合标签，Astro 默认放行行内 HTML。
+// remark 扩展语法：==词语== → <span class="capsule">词语</span>
+// 来历（SanYYao 钦定）：iPhone 备忘录粘贴 Markdown 后，会把 ** 强行转成苹果自己的 == 高亮语法，
+// 干脆反客为主——在晚星的站里，== 就是胶囊。苹果，该吃药了。💊
+// （早先用过 ***，已被用户忽略/废止：*** 恢复普通加粗斜体。）
+// 实现：== 不是标准 Markdown 语法，在 mdast 里只是普通文本，这里遍历 text 节点做切分。
+// 代码块与行内代码是独立节点类型（code / inlineCode），不会被误伤。零依赖，手写遍历。
 
-function capsuleInner(node) {
-  if (!node || !Array.isArray(node.children) || node.children.length !== 1) return null;
-  const inner = node.children[0];
-  if (node.type === 'emphasis' && inner.type === 'strong') return inner;
-  if (node.type === 'strong' && inner.type === 'emphasis') return inner;
-  return null;
+const CAPSULE_RE = /==([^=]+)==/g;
+
+function splitText(node) {
+  const value = node.value;
+  const parts = [];
+  let last = 0;
+  let found = false;
+  CAPSULE_RE.lastIndex = 0;
+  let m;
+  while ((m = CAPSULE_RE.exec(value)) !== null) {
+    found = true;
+    if (m.index > last) parts.push({ type: 'text', value: value.slice(last, m.index) });
+    parts.push({ type: 'html', value: '<span class="capsule">' });
+    parts.push({ type: 'text', value: m[1] });
+    parts.push({ type: 'html', value: '</span>' });
+    last = m.index + m[0].length;
+  }
+  if (!found) return null;
+  if (last < value.length) parts.push({ type: 'text', value: value.slice(last) });
+  return parts;
 }
 
 function walk(node) {
   if (!node || !Array.isArray(node.children)) return;
   const out = [];
   for (const child of node.children) {
-    const inner =
-      child.type === 'emphasis' || child.type === 'strong' ? capsuleInner(child) : null;
-    if (inner) {
-      out.push({ type: 'html', value: '<span class="capsule">' });
-      out.push(...inner.children);
-      out.push({ type: 'html', value: '</span>' });
-    } else {
-      walk(child);
-      out.push(child);
+    if (child.type === 'text') {
+      const parts = splitText(child);
+      if (parts) {
+        out.push(...parts);
+        continue;
+      }
     }
+    walk(child);
+    out.push(child);
   }
   node.children = out;
 }
