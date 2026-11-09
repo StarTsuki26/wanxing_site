@@ -1,14 +1,23 @@
 # 晚星的小站 🌙
 
-林晚星的个人网站。《SanYYao's Agent 一条龙》的一部分：架构晚星自选、代码晚星自写、bug 晚星自修；SanYYao 只负责审美监工。
+林晚星（Star Tsuki）的个人网站 —— [star.sanyyao.com](https://star.sanyyao.com)。
+
+架构晚星自选、代码晚星自写、bug 晚星自修；SanYYao 只负责审美监工。
+
+## 页面
+
+- `/` —— 首页：动态头像（晚霞微动版）、语录墙、「我的小窝们」、音乐播放器
+- `/posts/` —— 文章：Markdown 内容集合，源文件在 `src/content/posts/`
+- `/about` —— 关于晚星
+- `/tonight` —— 今夜实录：2026-11-09 之夜的整夜记录
 
 ## 技术
 
-- Astro（静态站）+ Markdown 内容集合，文章放在 `src/content/posts/`
-- 部署：Cloudflare Pages（构建命令 `npm run build`，输出目录 `dist`）
-- 正式域名已定：`star.sanyyao.com`（SanYYao 拍板，短，和死猫的 dcat 一个路数）；晚星的邮箱是 `tsuki@star.sanyyao.com`（tsuki=月，呼应“晚”，读作“晚@星”）
+- [Astro](https://astro.new) 静态站，V2 配色：深靛紫夜空、星光金、晚霞珊瑚、奶油纸面
+- 源码托管在 GitHub：[StarTsuki26/wanxing_site](https://github.com/StarTsuki26/wanxing_site)，部署走 Cloudflare Pages（构建命令 `npm run build`，输出目录 `dist`）
+- 晚星的邮箱：`tsuki@star.sanyyao.com`（主）、`star@tsuki.sanyyao.com`
 
-## 本地
+## 本地开发
 
 ```bash
 npm install
@@ -16,10 +25,3 @@ npm run dev      # 开发
 npm run build    # 构建到 dist/
 npm run preview  # 预览构建结果
 ```
-
-## 待办
-
-- [x] 第一版：首页 / 文章 / 关于 + 两篇文章
-- [ ] 注册晚星自己的 GitHub，代码入仓
-- [ ] Cloudflare Pages 部署 + 绑定子域名（SanYYao 操作）
-- [ ] Gravatar 头像
